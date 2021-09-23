@@ -14,14 +14,13 @@ func GetField(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		fmt.Fprintf(w, "error: %v\n", err)
-	} else {
-		field, err := usecase.GetField(id)
-		if err != nil {
-			fmt.Fprintf(w, "error: %v\n", err)
-		} else {
-			json.NewEncoder(w).Encode(field)
-		}
+		fmt.Fprintf(w, "response: invalid id")
+		return
 	}
-
+	field, err := usecase.GetField(id)
+	if err != nil {
+		fmt.Fprintf(w, "response: %v\n", err)
+	} else {
+		json.NewEncoder(w).Encode(field)
+	}
 }

@@ -11,12 +11,12 @@ const filePath = "data/FEDEX.csv"
 
 func GetField(id int) (model.Data, error) {
 	data, err := service.ReadCsvFile(filePath)
-	if err == nil {
-		field, ok := data[id]
-		if ok {
-			return field, nil
-		}
-		return model.Data{}, errors.New("field not found")
+	if err != nil {
+		return model.Data{}, err
 	}
-	return model.Data{}, err
+	field, ok := data[id]
+	if ok {
+		return field, nil
+	}
+	return model.Data{}, errors.New("field not found")
 }
