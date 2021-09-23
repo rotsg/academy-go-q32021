@@ -1,4 +1,4 @@
-package services
+package service
 
 import (
 	"encoding/csv"
@@ -7,11 +7,11 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/rotsg/first_deliverable/models"
+	"github.com/rotsg/first_deliverable/model"
 )
 
-func ReadCsvFile(filePath string) (map[int]models.Data, error) {
-	m := make(map[int]models.Data)
+func ReadCsvFile(filePath string) (map[int]model.Data, error) {
+	m := make(map[int]model.Data)
 	csvfile, err := os.Open(filePath)
 	if err != nil {
 		return m, errors.New("couldn't open the csv file")
@@ -28,7 +28,7 @@ func ReadCsvFile(filePath string) (map[int]models.Data, error) {
 		price, _ := strconv.ParseFloat(data[1], 64)
 		id, _ := strconv.Atoi(data[0])
 		concept := data[2]
-		m[id] = models.Data{id, price, concept}
+		m[id] = model.Data{id, price, concept}
 	}
 	return m, nil
 }

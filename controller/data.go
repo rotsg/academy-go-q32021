@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/rotsg/first_deliverable/usecases"
+	"github.com/rotsg/first_deliverable/usecase"
 )
 
 func GetField(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +16,7 @@ func GetField(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprintf(w, "error: %v\n", err)
 	} else {
-		field, err := usecases.GetField(id)
+		field, err := usecase.GetField(id)
 		if err != nil {
 			fmt.Fprintf(w, "error: %v\n", err)
 		} else {

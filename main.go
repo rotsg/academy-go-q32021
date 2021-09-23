@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/rotsg/first_deliverable/routes"
+	"github.com/rotsg/first_deliverable/route"
 )
 
 func main() {
-	routes.New()
+	route.New()
 }
