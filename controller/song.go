@@ -23,8 +23,9 @@ func GetSong(w http.ResponseWriter, r *http.Request) {
 	field, err := usecase.GetSong(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "response: %v\n", err)
+		fmt.Fprintf(w, "response: %v", err)
 		return
 	}
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(field)
 }
