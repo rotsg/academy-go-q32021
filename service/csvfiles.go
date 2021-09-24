@@ -4,17 +4,21 @@ import (
 	"encoding/csv"
 	"errors"
 	"io"
+	"log"
 	"os"
 	"strconv"
 
-	"github.com/rotsg/first_deliverable/model"
+	"github.com/rotsg/bootcamp_challenge/model"
 )
 
-func ReadCsvFile(filePath string) (map[int]model.Data, error) {
-	m := make(map[int]model.Data)
+const message = "something went wrong"
+
+func GetCsvData(filePath string) (map[int]model.Song, error) {
+	m := make(map[int]model.Song)
 	csvfile, err := os.Open(filePath)
 	if err != nil {
-		return m, errors.New("couldn't open the csv file")
+		log.Println("ERROR: ", err)
+		return m, errors.New(message)
 	}
 	r := csv.NewReader(csvfile)
 	for {
@@ -23,12 +27,19 @@ func ReadCsvFile(filePath string) (map[int]model.Data, error) {
 			break
 		}
 		if err != nil {
-			return m, errors.New("couldn't read the csv file")
+			log.Println("ERROR: ", err)
+			return m, errors.New(message)
 		}
-		price, _ := strconv.ParseFloat(data[1], 64)
-		id, _ := strconv.Atoi(data[0])
-		concept := data[2]
-		m[id] = model.Data{id, price, concept}
+		id, err := strconv.Atoi(data[0])
+		if err != nil {
+			log.Println("ERROR: ", err)
+			return m, errors.New(message)
+		}
+		m[id] = model.Song{
+			Id:     id,
+			Name:   data[1],
+			Artist: data[2],
+		}
 	}
 	return m, nil
 }

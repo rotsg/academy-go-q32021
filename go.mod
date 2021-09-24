@@ -1,4 +1,4 @@
-module github.com/rotsg/first_deliverable
+module github.com/rotsg/bootcamp_challenge
 
 go 1.17
 

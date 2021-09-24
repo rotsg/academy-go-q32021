@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/rotsg/first_deliverable/route"
+	"github.com/rotsg/bootcamp_challenge/route"
 )
 
 func main() {
