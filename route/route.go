@@ -1,8 +1,9 @@
 package route
 
 import (
+	"github.com/rotsg/academy-go-q32021/controller"
+
 	"github.com/gorilla/mux"
-	"github.com/rotsg/bootcamp_challenge/controller"
 )
 
 func New() *mux.Router {

@@ -8,11 +8,12 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/rotsg/bootcamp_challenge/model"
+	"github.com/rotsg/academy-go-q32021/model"
 )
 
 const message = "something went wrong"
 
+// GetCsvData - Reads a csv file from the path parameter and returns a map of songs.
 func GetCsvData(filePath string) (map[int]model.Song, error) {
 	m := make(map[int]model.Song)
 	csvfile, err := os.Open(filePath)
