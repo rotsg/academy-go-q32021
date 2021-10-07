@@ -7,13 +7,29 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/rotsg/academy-go-q32021/usecase"
+	"github.com/rotsg/academy-go-q32021/model"
 
 	"github.com/gorilla/mux"
 )
 
+type Controller struct {
+	service Service
+}
+
+type Service interface {
+	Getter
+}
+
+type Getter interface {
+	GetSong(id int) (model.Song, error)
+}
+
+func New(s Service) Controller {
+	return Controller{service: s}
+}
+
 // GetSong - Sends a http request to get a song by its id and return a json.
-func GetSong(w http.ResponseWriter, r *http.Request) {
+func (c Controller) GetSong(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -22,7 +38,7 @@ func GetSong(w http.ResponseWriter, r *http.Request) {
 		log.Println("ERROR: ", err)
 		return
 	}
-	song, err := usecase.GetSong(id)
+	song, err := c.service.GetSong(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintf(w, "response: %v", err)

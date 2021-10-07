@@ -1,4 +1,4 @@
-package service
+package repo
 
 import (
 	"encoding/csv"
@@ -11,19 +11,23 @@ import (
 	"github.com/rotsg/academy-go-q32021/model"
 )
 
+type Repo struct {
+	FilePath string
+}
+
 const message = "something went wrong"
 
-// GetCsvData - Reads a csv file from the path parameter and returns a map of songs.
-func GetCsvData(filePath string) (map[int]model.Song, error) {
+// GetSongs - Reads a csv file from the path parameter and returns a map of songs.
+func (r Repo) GetSongs() (map[int]model.Song, error) {
 	m := make(map[int]model.Song)
-	csvfile, err := os.Open(filePath)
+	csvfile, err := os.Open(r.FilePath)
 	if err != nil {
 		log.Println("ERROR: ", err)
 		return m, errors.New(message)
 	}
-	r := csv.NewReader(csvfile)
+	nr := csv.NewReader(csvfile)
 	for {
-		data, err := r.Read()
+		data, err := nr.Read()
 		if err == io.EOF {
 			break
 		}
