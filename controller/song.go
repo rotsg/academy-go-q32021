@@ -13,10 +13,10 @@ import (
 )
 
 type Controller struct {
-	service Service
+	service service
 }
 
-type Service interface {
+type service interface {
 	Getter
 }
 
@@ -24,7 +24,7 @@ type Getter interface {
 	GetSong(id int) (model.Song, error)
 }
 
-func New(s Service) Controller {
+func New(s service) Controller {
 	return Controller{service: s}
 }
 

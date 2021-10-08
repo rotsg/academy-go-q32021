@@ -7,10 +7,10 @@ import (
 )
 
 type Route struct {
-	controller Controller
+	controller controller
 }
 
-type Controller interface {
+type controller interface {
 	Getter
 }
 
@@ -18,7 +18,7 @@ type Getter interface {
 	GetSong(w http.ResponseWriter, r *http.Request)
 }
 
-func New(c Controller) Route {
+func New(c controller) Route {
 	return Route{controller: c}
 }
 
