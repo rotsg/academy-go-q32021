@@ -6,6 +6,7 @@ import (
 	"github.com/rotsg/academy-go-q32021/controller"
 	"github.com/rotsg/academy-go-q32021/repo"
 	"github.com/rotsg/academy-go-q32021/route"
+	"github.com/rotsg/academy-go-q32021/universities"
 	"github.com/rotsg/academy-go-q32021/usecase"
 )
 
@@ -15,6 +16,8 @@ const (
 )
 
 func main() {
+	universities.GetUniversities()
+
 	songsRepo := repo.Repo{FilePath: filePath}
 	songsUseCase := usecase.New(songsRepo)
 	songsController := controller.New(songsUseCase)
