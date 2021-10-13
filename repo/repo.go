@@ -48,3 +48,25 @@ func (r Repo) GetSongs() (map[int]model.Song, error) {
 	}
 	return m, nil
 }
+
+func (r Repo) UpdateUniversities(universities []model.University) error {
+	csvFile, err := os.Create(r.FilePath)
+	if err != nil {
+		log.Println("ERROR: ", err)
+		return errors.New(message)
+	}
+	defer csvFile.Close()
+
+	writer := csv.NewWriter(csvFile)
+
+	for index, university := range universities {
+		var row []string
+		row = append(row, strconv.Itoa(index+1))
+		row = append(row, university.Name)
+		row = append(row, university.Country)
+		row = append(row, university.WebPage[0])
+		writer.Write(row)
+	}
+	writer.Flush()
+	return nil
+}

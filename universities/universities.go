@@ -1,48 +1,38 @@
 package universities
 
 import (
-	"encoding/csv"
 	"encoding/json"
-	"fmt"
+	"errors"
 	"io/ioutil"
+	"log"
 	"net/http"
-	"os"
-	"strconv"
 
 	"github.com/rotsg/academy-go-q32021/model"
 )
 
-const api = "http://universities.hipolabs.com/search?country=Mexico"
+type University struct{}
 
-func GetUniversities() {
+const (
+	message = "something went wrong"
+	api     = "http://universities.hipolabs.com/search?country=Mexico"
+)
+
+func (u University) GetUniversities() ([]model.University, error) {
+	var universities []model.University
+
 	resp, err := http.Get(api)
 	if err != nil {
-		fmt.Println(err)
+		log.Println("ERROR: ", err)
+		return universities, errors.New(message)
 	}
 
 	defer resp.Body.Close()
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 
-	var jsonData []model.University
-	err = json.Unmarshal(bodyBytes, &jsonData)
+	err = json.Unmarshal(bodyBytes, &universities)
 	if err != nil {
-		fmt.Println(err)
+		log.Println("ERROR: ", err)
+		return universities, errors.New(message)
 	}
-
-	csvFile, err := os.Create("./data/universities.csv")
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer csvFile.Close()
-
-	writer := csv.NewWriter(csvFile)
-	for index, university := range jsonData {
-		var row []string
-		row = append(row, strconv.Itoa(index+1))
-		row = append(row, university.Name)
-		row = append(row, university.Country)
-		row = append(row, university.WebPage[0])
-		writer.Write(row)
-	}
-	writer.Flush()
+	return universities, nil
 }
