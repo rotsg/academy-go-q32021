@@ -12,10 +12,15 @@ type Route struct {
 
 type controller interface {
 	Getter
+	Updater
 }
 
 type Getter interface {
-	GetSong(w http.ResponseWriter, r *http.Request)
+	GetUniversity(w http.ResponseWriter, r *http.Request)
+}
+
+type Updater interface {
+	UpdateUniversities(w http.ResponseWriter, r *http.Request)
 }
 
 func New(c controller) Route {
@@ -24,6 +29,7 @@ func New(c controller) Route {
 
 func (r Route) SetupRoutes() *mux.Router {
 	router := mux.NewRouter()
-	router.HandleFunc("/songs/{id}", r.controller.GetSong).Methods("GET")
+	router.HandleFunc("/universities/{id}", r.controller.GetUniversity).Methods("GET")
+	router.HandleFunc("/universities/", r.controller.UpdateUniversities).Methods("GET")
 	return router
 }

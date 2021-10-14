@@ -10,14 +10,13 @@ import (
 	"github.com/rotsg/academy-go-q32021/model"
 )
 
-type University struct{}
-
 const (
 	message = "something went wrong"
 	api     = "http://universities.hipolabs.com/search?country=Mexico"
 )
 
-func (u University) GetUniversities() ([]model.University, error) {
+// GetUniversities - Consumes the external API and returns an array of universities.
+func GetUniversities() ([]model.University, error) {
 	var universities []model.University
 
 	resp, err := http.Get(api)

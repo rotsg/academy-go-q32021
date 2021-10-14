@@ -1,8 +1,12 @@
 package main
 
 import (
+	"net/http"
+
+	"github.com/rotsg/academy-go-q32021/controller"
 	"github.com/rotsg/academy-go-q32021/repo"
-	"github.com/rotsg/academy-go-q32021/universities"
+	"github.com/rotsg/academy-go-q32021/route"
+	"github.com/rotsg/academy-go-q32021/usecase"
 )
 
 const (
@@ -11,13 +15,11 @@ const (
 )
 
 func main() {
-	uni := universities.University{}
-	newUniversities, _ := uni.GetUniversities()
-	songsRepo := repo.Repo{FilePath: filePath}
-	songsRepo.UpdateUniversities(newUniversities)
-	/*
-		songsUseCase := usecase.New(songsRepo)
-		songsController := controller.New(songsUseCase)
-		songsRoute := route.New(songsController)
-		http.ListenAndServe(port, songsRoute.SetupRoutes())*/
+	universitiesRepo := repo.Repo{
+		FilePath: filePath,
+	}
+	universitiesUseCase := usecase.New(universitiesRepo)
+	universitiesController := controller.New(universitiesUseCase)
+	universitiesRoute := route.New(universitiesController)
+	http.ListenAndServe(port, universitiesRoute.SetupRoutes())
 }
