@@ -2,7 +2,7 @@ package universities
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -10,23 +10,28 @@ import (
 	"github.com/rotsg/academy-go-q32021/model"
 )
 
-const api = "http://universities.hipolabs.com/search?country=Mexico"
+const (
+	message = "something went wrong"
+	api     = "http://universities.hipolabs.com/search?country=Mexico"
+)
 
-func GetUniversities() {
+// GetUniversities - Consumes the external API and returns an array of universities.
+func GetUniversities() ([]model.University, error) {
+	var universities []model.University
+
 	resp, err := http.Get(api)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println("ERROR: ", err)
+		return universities, errors.New(message)
 	}
 
 	defer resp.Body.Close()
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 
-	// Convert response body to string
-	bodyString := string(bodyBytes)
-	fmt.Println("API Response as String:\n" + bodyString)
-
-	// Convert response body to Todo struct
-	var todoStruct model.University
-	json.Unmarshal(bodyBytes, &todoStruct)
-	fmt.Printf("API Response as struct %+v\n", todoStruct)
+	err = json.Unmarshal(bodyBytes, &universities)
+	if err != nil {
+		log.Println("ERROR: ", err)
+		return universities, errors.New(message)
+	}
+	return universities, nil
 }

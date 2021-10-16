@@ -11,13 +11,15 @@ import (
 
 const (
 	port     = ":8080"
-	filePath = "data/songs.csv"
+	filePath = "./data/universities.csv"
 )
 
 func main() {
-	songsRepo := repo.Repo{FilePath: filePath}
-	songsUseCase := usecase.New(songsRepo)
-	songsController := controller.New(songsUseCase)
-	songsRoute := route.New(songsController)
-	http.ListenAndServe(port, songsRoute.SetupRoutes())
+	universitiesRepo := repo.Repo{
+		FilePath: filePath,
+	}
+	universitiesUseCase := usecase.New(universitiesRepo)
+	universitiesController := controller.New(universitiesUseCase)
+	universitiesRoute := route.New(universitiesController)
+	http.ListenAndServe(port, universitiesRoute.SetupRoutes())
 }
